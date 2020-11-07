@@ -1,0 +1,15 @@
+{
+  "name": "native-touchbar",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "viktorstrate <viktorstrate@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "parcel src/manifest.json"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-web-extension": "^1.6.1"
+  }
+}

@@ -1,0 +1,12 @@
+# Xcode
+
+## User settings
+xcuserdata/
+
+# Node
+
+node_modules/
+
+## Build
+dist/
+.cache/
