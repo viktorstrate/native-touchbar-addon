@@ -9,8 +9,41 @@ import Foundation
 
 class BrowserCommunication {
   
-  func processMessage(_ message: String) {
-    // Process message
+  fileprivate let jsonDecoder = JSONDecoder()
+  fileprivate let jsonEncoder = JSONEncoder()
+  
+  fileprivate func processMessage(_ message: String) {
+    NSLog("Message: %@", message)
+    
+    guard let nativeMessage = try? jsonDecoder.decode(NativeMessageRequest.self, from: message.data(using: .utf8)!) else {
+      NSLog("Invalid message structure")
+      return
+    }
+    
+    switch nativeMessage.type {
+    case .ping:
+      NSLog("Received ping")
+      let pong: [String: String] = [
+        "type": "ping",
+        "value": "pong",
+      ]
+      let json = try! jsonEncoder.encode(pong)
+      sendMessage(message: json)
+    }
+    
+  }
+  
+  func sendMessage(message: Data) {
+    NSLog("Sending message")
+    
+    let size = UInt32(message.count)
+    var data = withUnsafeBytes(of: size) {
+      Data($0)
+    }
+    
+    data.append(message)
+    
+    FileHandle.standardOutput.write(data)
   }
   
   func waitForCommands() {
@@ -27,7 +60,7 @@ class BrowserCommunication {
         
         // Parse size
         let messageSize: Int = data.withUnsafeBytes {
-          Int( UInt32(littleEndian: $0.load(as: UInt32.self)) )
+          Int( $0.load(as: UInt32.self) )
         }
         
         // Remove parsed size bytes from 'data'
@@ -40,7 +73,6 @@ class BrowserCommunication {
         // Read at least the whole message
         while data.count < messageSize {
           data.append(input.availableData)
-          NSLog("Received body data: %i", data.count)
         }
         
         // Parse the message at utf8

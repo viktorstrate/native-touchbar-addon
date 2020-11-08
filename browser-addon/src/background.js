@@ -17,15 +17,31 @@ port.onDisconnect.addListener((p) => {
 Listen for messages from the app.
 */
 port.onMessage.addListener((response) => {
-  console.log("Received: " + response);
+  console.log("Received", response);
 });
 
 /*
 On a click on the browser action, send the app a message.
 */
 browser.browserAction.onClicked.addListener(() => {
-  console.log("Sending:  ping");
-  port.postMessage("ping");
+  console.log("Sending:  button layout");
+
+  // const touchbarLayout = {
+  //   type: 'update_touchbar_layout',
+  //   buttons: [
+  //     {
+  //       type: 'simple',
+  //       name: 'browser-button',
+  //       label: 'From the browser',
+  //     }
+  //   ]
+  // }
+
+  const ping = {
+    type: 'ping'
+  }
+
+  port.postMessage(ping);
 });
 
 console.log('background end')
