@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class BrowserCommunication {
+  
+  var delegate: BrowserCommunicationDelegate?
   
   fileprivate let jsonDecoder = JSONDecoder()
   fileprivate let jsonEncoder = JSONEncoder()
@@ -15,33 +18,28 @@ class BrowserCommunication {
   fileprivate func processMessage(_ message: String) {
     NSLog("Message: %@", message)
     
-    guard let nativeMessage = try? jsonDecoder.decode(NativeMessageRequest.self, from: message.data(using: .utf8)!) else {
-      NSLog("Invalid message structure")
+    guard let jsonMessage = try? JSON(data: message.data(using: .utf8)!) else {
+      NSLog("Could not parse message as json")
       return
     }
     
-    switch nativeMessage.type {
-    case .ping:
-      NSLog("Received ping")
-      let pong: [String: String] = [
-        "type": "ping",
-        "value": "pong",
-      ]
-      let json = try! jsonEncoder.encode(pong)
-      sendMessage(message: json)
-    }
-    
+    self.delegate?.processMessage(jsonMessage, browserCommunication: self)
   }
   
-  func sendMessage(message: Data) {
+  func sendMessage(message: JSON) {
     NSLog("Sending message")
     
-    let size = UInt32(message.count)
+    guard let messageData = try? message.rawData() else {
+      NSLog("Failed to format json")
+      return
+    }
+    
+    let size = UInt32(messageData.count)
     var data = withUnsafeBytes(of: size) {
       Data($0)
     }
     
-    data.append(message)
+    data.append(messageData)
     
     FileHandle.standardOutput.write(data)
   }
@@ -92,4 +90,8 @@ class BrowserCommunication {
     }
   }
   
+}
+
+protocol BrowserCommunicationDelegate {
+  func processMessage(_ message: JSON, browserCommunication: BrowserCommunication)
 }

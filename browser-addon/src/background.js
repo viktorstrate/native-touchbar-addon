@@ -26,22 +26,22 @@ On a click on the browser action, send the app a message.
 browser.browserAction.onClicked.addListener(() => {
   console.log("Sending:  button layout");
 
-  // const touchbarLayout = {
-  //   type: 'update_touchbar_layout',
-  //   buttons: [
-  //     {
-  //       type: 'simple',
-  //       name: 'browser-button',
-  //       label: 'From the browser',
-  //     }
-  //   ]
-  // }
+  const touchbarLayout = {
+    type: 'change_layout',
+    layout: [
+      {
+        type: 'button',
+        name: 'browser-button',
+        label: 'From the browser 🥳',
+      }
+    ]
+  }
 
   const ping = {
     type: 'ping'
   }
 
-  port.postMessage(ping);
+  port.postMessage(touchbarLayout);
 });
 
 console.log('background end')

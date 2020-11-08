@@ -10,8 +10,15 @@ import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate  {
   
-  let touchbarHandler = TouchBarHandler()
-  let browserCommunication = BrowserCommunication()
+  let touchbarHandler: TouchBarHandler
+  let browserCommunication: BrowserCommunication
+  let messageHandler: MessageHandler
+  
+  override init() {
+    self.touchbarHandler = TouchBarHandler()
+    self.browserCommunication = BrowserCommunication()
+    self.messageHandler = MessageHandler(touchbarHandler: touchbarHandler)
+  }
   
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     // Insert code here to initialize your application
@@ -25,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate  {
       foremostApplicationChanged(to: foregroundApp)
     }
     
+    browserCommunication.delegate = messageHandler
     browserCommunication.waitForCommands()
     
   }

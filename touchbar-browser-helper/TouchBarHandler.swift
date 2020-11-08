@@ -16,16 +16,48 @@ extension NSTouchBarItem.Identifier {
 
 class TouchBarHandler: NSObject, NSTouchBarDelegate {
   
-  lazy var touchbarStrip: NSTouchBar = {
+  var layoutComponents: [TouchBarComponent] = [] {
+    didSet {
+      DispatchQueue.main.async {
+        self.touchbarStripVisible = false
+        self.touchbarStrip = self.makeTouchbarStrip()
+        self.touchbarStripVisible = true
+      }
+    }
+  }
+  
+  fileprivate lazy var touchbarStrip: NSTouchBar = {
+    makeTouchbarStrip()
+  }()
+  
+  var touchbarStripVisible: Bool {
+    set {
+      if newValue {
+        NSTouchBar.presentSystemModalTouchBar(touchbarStrip, systemTrayItemIdentifier: .touchbarBrowserClose)
+      } else {
+        NSTouchBar.dismissSystemModalTouchBar(touchbarStrip)
+      }
+    }
+    
+    get {
+      touchbarStrip.isVisible
+    }
+  }
+  
+  func makeTouchbarStrip() -> NSTouchBar {
     let strip = NSTouchBar()
-    strip.defaultItemIdentifiers = [.touchbarBrowserClose]
+//    strip.defaultItemIdentifiers = [.touchbarBrowserClose]
+    strip.defaultItemIdentifiers = []
+    
+    strip.defaultItemIdentifiers.append(contentsOf: layoutComponents.map({ $0.identifier }))
+    
     strip.delegate = self
     return strip
-  }()
+  }
   
   lazy var globalTouchBarItem: NSCustomTouchBarItem = {
     let item = NSCustomTouchBarItem(identifier: .touchbarBrowserGlobal)
-    item.view = NSButton(title: "🌍", target: self, action: #selector(actionTouchbarButtonOpen))
+    item.view = NSButton(title: "🌍", target: self, action: #selector(actionTouchbarButtonToggle))
     return item
   }()
   
@@ -36,16 +68,25 @@ class TouchBarHandler: NSObject, NSTouchBarDelegate {
       globalButton.view = NSButton(title: "Close", target: self, action: #selector(actionTouchbarButtonClose))
       return globalButton
     default:
-      return nil
+      // Look in layoutComponents
+      if let component = layoutComponents.first(where: { $0.identifier == identifier }) {
+        return component.touchBarItem
+      }
     }
+    
+    return nil
+  }
+  
+  @objc func actionTouchbarButtonToggle() {
+    touchbarStripVisible = !touchbarStripVisible
   }
   
   @objc func actionTouchbarButtonOpen() {
-    NSTouchBar.presentSystemModalTouchBar(touchbarStrip, systemTrayItemIdentifier: .touchbarBrowserClose)
+    touchbarStripVisible = true
   }
   
   @objc func actionTouchbarButtonClose() {
-    NSTouchBar.dismissSystemModalTouchBar(touchbarStrip)
+    touchbarStripVisible = false
   }
   
   func showGlobalTouchBarItem() {

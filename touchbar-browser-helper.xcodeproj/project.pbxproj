@@ -3,14 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		349D4DE02558591F001DD052 /* BrowserCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DDF2558591F001DD052 /* BrowserCommunication.swift */; };
 		349D4DE425585ADD001DD052 /* TouchBarHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DE325585ADD001DD052 /* TouchBarHandler.swift */; };
-		349D4DE825585FE0001DD052 /* NativeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DE725585FE0001DD052 /* NativeMessage.swift */; };
 		349D4DEB25586AEC001DD052 /* touchbar-browser-helper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34B8E8C6255752A000F0AD2A /* touchbar-browser-helper */; };
+		349D4DF22558744A001DD052 /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DF12558744A001DD052 /* MessageHandler.swift */; };
+		349D4DF6255876C8001DD052 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 349D4DF5255876C8001DD052 /* SwiftyJSON */; };
+		349D4DFB25587AB3001DD052 /* TouchBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DFA25587AB3001DD052 /* TouchBarComponent.swift */; };
 		34B8E8CA255752A000F0AD2A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E8C9255752A000F0AD2A /* main.swift */; };
 		34B8E8D2255752C700F0AD2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E8D1255752C700F0AD2A /* AppDelegate.swift */; };
 		34B8E8DD2557534600F0AD2A /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B8E8DC2557534600F0AD2A /* DFRFoundation.framework */; };
@@ -32,7 +34,8 @@
 /* Begin PBXFileReference section */
 		349D4DDF2558591F001DD052 /* BrowserCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserCommunication.swift; sourceTree = "<group>"; };
 		349D4DE325585ADD001DD052 /* TouchBarHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarHandler.swift; sourceTree = "<group>"; };
-		349D4DE725585FE0001DD052 /* NativeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeMessage.swift; sourceTree = "<group>"; };
+		349D4DF12558744A001DD052 /* MessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHandler.swift; sourceTree = "<group>"; };
+		349D4DFA25587AB3001DD052 /* TouchBarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarComponent.swift; sourceTree = "<group>"; };
 		34B8E8C6255752A000F0AD2A /* touchbar-browser-helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "touchbar-browser-helper"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34B8E8C9255752A000F0AD2A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		34B8E8D1255752C700F0AD2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -46,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				349D4DF6255876C8001DD052 /* SwiftyJSON in Frameworks */,
 				34B8E8DD2557534600F0AD2A /* DFRFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,10 +57,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		349D4DE625585FC4001DD052 /* Models */ = {
+		349D4DF925587AA1001DD052 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				349D4DE725585FE0001DD052 /* NativeMessage.swift */,
+				349D4DFA25587AB3001DD052 /* TouchBarComponent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -81,12 +85,13 @@
 		34B8E8C8255752A000F0AD2A /* touchbar-browser-helper */ = {
 			isa = PBXGroup;
 			children = (
-				349D4DE625585FC4001DD052 /* Models */,
+				349D4DF925587AA1001DD052 /* Models */,
 				34B8E8D4255752FF00F0AD2A /* TouchBar */,
 				34B8E8C9255752A000F0AD2A /* main.swift */,
 				34B8E8D1255752C700F0AD2A /* AppDelegate.swift */,
 				349D4DDF2558591F001DD052 /* BrowserCommunication.swift */,
 				349D4DE325585ADD001DD052 /* TouchBarHandler.swift */,
+				349D4DF12558744A001DD052 /* MessageHandler.swift */,
 			);
 			path = "touchbar-browser-helper";
 			sourceTree = "<group>";
@@ -124,6 +129,9 @@
 			dependencies = (
 			);
 			name = "touchbar-browser-helper";
+			packageProductDependencies = (
+				349D4DF5255876C8001DD052 /* SwiftyJSON */,
+			);
 			productName = "touchbar-browser-helper";
 			productReference = 34B8E8C6255752A000F0AD2A /* touchbar-browser-helper */;
 			productType = "com.apple.product-type.tool";
@@ -152,6 +160,9 @@
 				Base,
 			);
 			mainGroup = 34B8E8BD255752A000F0AD2A;
+			packageReferences = (
+				349D4DF4255876C8001DD052 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			productRefGroup = 34B8E8C7255752A000F0AD2A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -168,9 +179,10 @@
 			files = (
 				34B8E8D2255752C700F0AD2A /* AppDelegate.swift in Sources */,
 				34B8E8CA255752A000F0AD2A /* main.swift in Sources */,
-				349D4DE825585FE0001DD052 /* NativeMessage.swift in Sources */,
 				349D4DE425585ADD001DD052 /* TouchBarHandler.swift in Sources */,
+				349D4DF22558744A001DD052 /* MessageHandler.swift in Sources */,
 				349D4DE02558591F001DD052 /* BrowserCommunication.swift in Sources */,
+				349D4DFB25587AB3001DD052 /* TouchBarComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +367,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		349D4DF4255876C8001DD052 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		349D4DF5255876C8001DD052 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 349D4DF4255876C8001DD052 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 34B8E8BE255752A000F0AD2A /* Project object */;
 }
