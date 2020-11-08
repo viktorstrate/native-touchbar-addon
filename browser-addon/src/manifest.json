@@ -10,7 +10,7 @@
 
   "browser_specific_settings": {
     "gecko": {
-      "id": "touchbar@viktorstrate.github.com",
+      "id": "touchbar_browser_helper@viktorstrate.github.com",
       "strict_min_version": "50.0"
     }
   },

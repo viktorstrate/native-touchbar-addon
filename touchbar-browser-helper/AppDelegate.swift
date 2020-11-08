@@ -7,28 +7,11 @@
 
 import Cocoa
 
-let identifierPrefix = "com.github.viktorstrate.touchbar-browser-helper"
 
-extension NSTouchBarItem.Identifier {
-  static let touchbarBrowserGlobal = NSTouchBarItem.Identifier("\(identifierPrefix).global")
-  static let touchbarBrowserClose = NSTouchBarItem.Identifier("\(identifierPrefix).close")
-}
-
-class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate  {
   
-  lazy var touchbarStrip: NSTouchBar = {
-    let strip = NSTouchBar()
-    strip.defaultItemIdentifiers = [.touchbarBrowserClose]
-    strip.delegate = self
-    return strip
-  }()
-  
-  lazy var globalTouchBarItem: NSCustomTouchBarItem = {
-    let item = NSCustomTouchBarItem(identifier: .touchbarBrowserGlobal)
-    item.view = NSButton(title: "🌍", target: self, action: #selector(actionTouchbarButtonOpen))
-    return item
-  }()
-  
+  let touchbarHandler = TouchBarHandler()
+  let browserCommunication = BrowserCommunication()
   
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     // Insert code here to initialize your application
@@ -38,19 +21,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
       name: NSWorkspace.didActivateApplicationNotification,
       object:nil)
     
+    if let foregroundApp = NSWorkspace.shared.frontmostApplication {
+      foremostApplicationChanged(to: foregroundApp)
+    }
+    
+    browserCommunication.waitForCommands()
+    
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {
     // Insert code here to tear down your application
-  }
-  
-  func showGlobalTouchBarItem() {
-    NSTouchBarItem.addSystemTrayItem(self.globalTouchBarItem)
-    DFRElementSetControlStripPresenceForIdentifier(.touchbarBrowserGlobal, true)
-  }
-  
-  func removeGlobalTouchBarItem() {
-    NSTouchBarItem.removeSystemTrayItem(self.globalTouchBarItem)
   }
   
   @objc func appActivatedEvent(notification: Notification) {
@@ -59,33 +39,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
       return
     }
     
+    foremostApplicationChanged(to: foregroundApp)
+  }
+  
+  func foremostApplicationChanged(to foregroundApp: NSRunningApplication) {
     if foregroundApp.bundleIdentifier == "org.mozilla.firefox" {
-      self.showGlobalTouchBarItem()
+      self.touchbarHandler.showGlobalTouchBarItem()
     } else {
-      self.removeGlobalTouchBarItem()
-    }
-  }
-  
-  @objc func actionTouchbarButtonOpen() {
-    print("Global touchbar button clicked")
-    
-    NSTouchBar.presentSystemModalTouchBar(touchbarStrip, systemTrayItemIdentifier: .touchbarBrowserClose)
-  }
-  
-  @objc func actionTouchbarButtonClose() {
-    print("Close touchbar")
-    
-    NSTouchBar.dismissSystemModalTouchBar(touchbarStrip)
-  }
-
-  func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
-    switch identifier {
-    case .touchbarBrowserClose:
-      let globalButton = NSCustomTouchBarItem(identifier: .touchbarBrowserClose)
-      globalButton.view = NSButton(title: "Close", target: self, action: #selector(actionTouchbarButtonClose))
-      return globalButton
-    default:
-      return nil
+      self.touchbarHandler.removeGlobalTouchBarItem()
     }
   }
 

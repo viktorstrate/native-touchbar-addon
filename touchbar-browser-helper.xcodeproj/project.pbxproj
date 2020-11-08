@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		349D4DE02558591F001DD052 /* BrowserCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DDF2558591F001DD052 /* BrowserCommunication.swift */; };
+		349D4DE425585ADD001DD052 /* TouchBarHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DE325585ADD001DD052 /* TouchBarHandler.swift */; };
 		34B8E8CA255752A000F0AD2A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E8C9255752A000F0AD2A /* main.swift */; };
 		34B8E8D2255752C700F0AD2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E8D1255752C700F0AD2A /* AppDelegate.swift */; };
 		34B8E8DD2557534600F0AD2A /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B8E8DC2557534600F0AD2A /* DFRFoundation.framework */; };
@@ -25,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		349D4DDF2558591F001DD052 /* BrowserCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserCommunication.swift; sourceTree = "<group>"; };
+		349D4DE325585ADD001DD052 /* TouchBarHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarHandler.swift; sourceTree = "<group>"; };
 		34B8E8C6255752A000F0AD2A /* touchbar-browser-helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "touchbar-browser-helper"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34B8E8C9255752A000F0AD2A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		34B8E8D1255752C700F0AD2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +72,8 @@
 				34B8E8D4255752FF00F0AD2A /* TouchBar */,
 				34B8E8C9255752A000F0AD2A /* main.swift */,
 				34B8E8D1255752C700F0AD2A /* AppDelegate.swift */,
+				349D4DDF2558591F001DD052 /* BrowserCommunication.swift */,
+				349D4DE325585ADD001DD052 /* TouchBarHandler.swift */,
 			);
 			path = "touchbar-browser-helper";
 			sourceTree = "<group>";
@@ -149,6 +155,8 @@
 			files = (
 				34B8E8D2255752C700F0AD2A /* AppDelegate.swift in Sources */,
 				34B8E8CA255752A000F0AD2A /* main.swift in Sources */,
+				349D4DE425585ADD001DD052 /* TouchBarHandler.swift in Sources */,
+				349D4DE02558591F001DD052 /* BrowserCommunication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
