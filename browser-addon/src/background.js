@@ -23,25 +23,25 @@ port.onMessage.addListener((response) => {
 /*
 On a click on the browser action, send the app a message.
 */
-browser.browserAction.onClicked.addListener(() => {
-  console.log("Sending:  button layout");
+// browser.browserAction.onClicked.addListener(() => {
+//   console.log("Sending:  button layout");
 
-  const touchbarLayout = {
-    type: 'change_layout',
-    layout: [
-      {
-        type: 'button',
-        name: 'browser-button',
-        label: 'From the browser 🥳',
-      }
-    ]
-  }
+//   const touchbarLayout = {
+//     type: 'change_layout',
+//     layout: [
+//       {
+//         type: 'button',
+//         name: 'browser-button',
+//         label: 'From the browser 🥳',
+//       }
+//     ]
+//   }
 
-  const ping = {
-    type: 'ping'
-  }
+//   const ping = {
+//     type: 'ping'
+//   }
 
-  port.postMessage(touchbarLayout);
-});
+//   port.postMessage(touchbarLayout);
+// });
 
 console.log('background end')

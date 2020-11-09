@@ -20,7 +20,10 @@
   },
 
   "browser_action": {
-    "default_icon": "icons/message.svg"
+    "browser_style": true,
+    "default_icon": "icons/message.svg",
+    "default_title": "Touchbar",
+    "default_popup": "popup/popup.html"
   },
 
   "permissions": [
