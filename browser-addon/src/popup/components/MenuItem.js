@@ -1,9 +1,9 @@
 import React from 'react'
-import Separator from './MenuSeparator'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const ItemWrapper = styled.div`
-  padding: 4px;
+  padding: 4px 8px;
   margin: 2px 0;
 
   &:hover {
@@ -11,8 +11,14 @@ const ItemWrapper = styled.div`
   }
 `
 
-const MenuItem = ({ label }) => (
-  <ItemWrapper>{ label }</ItemWrapper>
-)
+const MenuItem = ({ label, navigateTo }) => {
+  const item = <ItemWrapper>{label}</ItemWrapper>
+
+  if (navigateTo) {
+    return <Link to={navigateTo}>{item}</Link>
+  }
+
+  return item
+}
 
 export default MenuItem

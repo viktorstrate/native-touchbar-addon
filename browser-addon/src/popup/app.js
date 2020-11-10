@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createGlobalStyle } from 'styled-components'
-
-import MenuItem from './components/MenuItem'
-import MenuLabel from './components/MenuLabel'
-import Separator from './components/MenuSeparator'
+import { MemoryRouter as Router, Route } from 'react-router-dom'
+import MainMenu from './routes/MainMenu'
+import NavigationHeader from './components/NavigationHeader'
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -17,16 +16,14 @@ const GlobalStyles = createGlobalStyle`
 `
 
 const App = () => (
-  <div>
+  <Router initialEntries={['/']}>
     <GlobalStyles />
-    <MenuItem label="Load scripts" />
-    <Separator />
-    <MenuLabel>Some options</MenuLabel>
-    <MenuItem label="Option A" />
-    <MenuItem label="Option B" />
-  </div>
+    <Route path="/(.+)" component={NavigationHeader} />
+    <Route path="/" exact>
+      <MainMenu />
+    </Route>
+  </Router>
 )
 
 const appElement = document.querySelector('#app')
 ReactDOM.render(<App />, appElement)
-

@@ -26,6 +26,10 @@
     "default_popup": "popup/popup.html"
   },
 
+  "user_scripts": {
+    "api_script": "touchbar_api.js"
+  },
+
   "permissions": [
     "nativeMessaging"
   ]
