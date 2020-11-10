@@ -1,24 +1,11 @@
-import * as store from './store'
-
 const nativePort = browser.runtime.connectNative('touchbar_browser_helper')
 
 console.log('background start')
 
+let tabTouchbarLayouts = {}
 let activeTouchbarTab = null
 
-const packet = store.addPacket({
-  name: 'test',
-  enabled: true,
-  script: '// hello world',
-  path: 'google.com',
-})
-
-packet.then(x => {
-  console.log('packet', x)
-
-  store.getPacket(x.key).then(console.log)
-})
-
+// Native bridge
 console.log('native port', nativePort)
 
 nativePort.onDisconnect.addListener(p => {
@@ -30,10 +17,14 @@ nativePort.onDisconnect.addListener(p => {
 browser.runtime.onMessage.addListener(({ message }, sender, sendResponse) => {
   console.log('runtime message', sender, sendResponse)
 
-  activeTouchbarTab = sender.tab
-
   if (message.type == 'send_native_message') {
     console.log('sending native message', message.nativeMessage)
+
+    if (message.nativeMessage.type == 'change_layout') {
+      tabTouchbarLayouts[sender.tab.id] = message.nativeMessage.layout
+      activeTouchbarTab = sender.tab.id
+    }
+
     nativePort.postMessage(message.nativeMessage)
   }
 })
@@ -43,7 +34,7 @@ nativePort.onMessage.addListener(response => {
 
   if (activeTouchbarTab) {
     console.log('sending message to tab', activeTouchbarTab)
-    browser.tabs.sendMessage(activeTouchbarTab.id, {
+    browser.tabs.sendMessage(activeTouchbarTab, {
       type: 'action',
       name: response.name,
     })
@@ -86,4 +77,24 @@ nativePort.onMessage.addListener(response => {
   console.log('script registered', result)
 })()
 
-console.log('background end')
+// Tab management
+browser.tabs.onRemoved.addListener(({ tabId }) => {
+  console.log('tab closed cleaning up', tabId)
+  tabTouchbarLayouts[tabId] = undefined
+})
+
+browser.tabs.onActivated.addListener(({ tabId }) => {
+  console.log('tab activated')
+  if (tabTouchbarLayouts[tabId]) {
+    console.log('tab changed changing layout', tabId)
+
+    activeTouchbarTab = tabId
+
+    nativePort.postMessage({
+      type: 'change_layout',
+      layout: tabTouchbarLayouts[tabId],
+    })
+  } else {
+    activeTouchbarTab = null
+  }
+})
