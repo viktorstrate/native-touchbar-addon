@@ -1,9 +1,10 @@
 {
 
   "name": "Touchbar",
-  "description": "Native macOS touchbar controls",
   "manifest_version": 2,
   "version": "1.0",
+
+  "description": "Native macOS touchbar controls",
   "icons": {
     "48": "icons/message.svg"
   },
@@ -23,16 +24,17 @@
     "browser_style": true,
     "default_icon": "icons/message.svg",
     "default_title": "Touchbar",
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup.html"
   },
 
   "user_scripts": {
-    "api_script": "touchbar_api.js"
+    "api_script": "touchbarScriptAPI.js"
   },
 
   "permissions": [
-    "nativeMessaging",
-    "storage"
+    "<all_urls>",
+    "storage",
+    "nativeMessaging"
   ]
 
 }

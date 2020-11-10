@@ -19,15 +19,17 @@ class TouchBarHandler: NSObject, NSTouchBarDelegate {
   var layoutComponents: [TouchBarComponent] = [] {
     didSet {
       DispatchQueue.main.async {
-        self.touchbarStripVisible = false
-        self.touchbarStrip = self.makeTouchbarStrip()
+        self.updateTouchbarStrip()
         self.touchbarStripVisible = true
       }
     }
   }
   
   fileprivate lazy var touchbarStrip: NSTouchBar = {
-    makeTouchbarStrip()
+    let strip = NSTouchBar()
+    strip.defaultItemIdentifiers = []
+    strip.delegate = self
+    return strip
   }()
   
   var touchbarStripVisible: Bool {
@@ -44,15 +46,11 @@ class TouchBarHandler: NSObject, NSTouchBarDelegate {
     }
   }
   
-  func makeTouchbarStrip() -> NSTouchBar {
-    let strip = NSTouchBar()
+  func updateTouchbarStrip() {
+    
 //    strip.defaultItemIdentifiers = [.touchbarBrowserClose]
-    strip.defaultItemIdentifiers = []
-    
-    strip.defaultItemIdentifiers.append(contentsOf: layoutComponents.map({ $0.identifier }))
-    
-    strip.delegate = self
-    return strip
+    touchbarStrip.defaultItemIdentifiers = []
+    touchbarStrip.defaultItemIdentifiers.append(contentsOf: layoutComponents.map({ $0.identifier }))
   }
   
   lazy var globalTouchBarItem: NSCustomTouchBarItem = {

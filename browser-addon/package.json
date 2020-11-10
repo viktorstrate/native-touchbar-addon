@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "parcel src/manifest.json"
+    "start": "parcel src/background.js src/popup.html src/touchbarScriptAPI.js"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -14,12 +14,12 @@
     "@babel/preset-env": "^7.12.1",
     "eslint": "^7.13.0",
     "eslint-plugin-react": "^7.21.5",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-web-extension": "^1.6.1",
+    "parcel-plugin-static-files-copy": "^2.5.0",
     "prettier": "^2.1.2",
     "react-router-dom": "^5.2.0"
   },
   "dependencies": {
+    "parcel-bundler": "^1.12.4",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router": "^5.2.0",
@@ -30,7 +30,8 @@
     "env": {
       "browser": true,
       "es6": true,
-      "webextensions": true
+      "webextensions": true,
+      "node": true
     },
     "extends": [
       "eslint:recommended",
