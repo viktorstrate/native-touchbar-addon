@@ -9,6 +9,9 @@
     "start": "parcel src/manifest.json"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
     "eslint": "^7.13.0",
     "eslint-plugin-react": "^7.21.5",
     "parcel-bundler": "^1.12.4",
@@ -20,7 +23,8 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router": "^5.2.0",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "uuid": "^8.3.1"
   },
   "eslintConfig": {
     "env": {
@@ -33,11 +37,21 @@
       "plugin:react/recommended"
     ],
     "parserOptions": {
-      "sourceType": "module"
+      "sourceType": "module",
+      "ecmaVersion": 2017
     },
     "rules": {
-      "react/prop-types": "off"
+      "react/prop-types": "off",
+      "no-unused-vars": "warn"
     }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "plugins": [
+      "@babel/plugin-transform-runtime"
+    ]
   },
   "prettier": {
     "trailingComma": "es5",

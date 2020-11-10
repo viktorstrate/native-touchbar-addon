@@ -1,24 +1,33 @@
+import * as store from './store'
+
 console.log('background start')
 
-/*
-On startup, connect to the "touchbar-browser-helper" app.
-*/
-var port = browser.runtime.connectNative("touchbar_browser_helper");
+const packet = store.addPacket({
+  name: 'test',
+  enabled: true,
+  script: '// hello world',
+  path: 'google.com',
+})
+
+packet.then(x => {
+  console.log('packet', x)
+
+  store.getPacket(x.key).then(console.log)
+})
+
+var port = browser.runtime.connectNative('touchbar_browser_helper')
 
 console.log('native port', port)
 
-port.onDisconnect.addListener((p) => {
+port.onDisconnect.addListener(p => {
   if (p.error) {
-    console.log(`Disconnected due to an error: ${p.error.message}`);
+    console.log(`Disconnected due to an error: ${p.error.message}`)
   }
-});
+})
 
-/*
-Listen for messages from the app.
-*/
-port.onMessage.addListener((response) => {
-  console.log("Received", response);
-});
+port.onMessage.addListener(response => {
+  console.log('Received', response)
+})
 
 /*
 On a click on the browser action, send the app a message.
