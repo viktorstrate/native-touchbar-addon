@@ -13,6 +13,7 @@
 		349D4DF22558744A001DD052 /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DF12558744A001DD052 /* MessageHandler.swift */; };
 		349D4DF6255876C8001DD052 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 349D4DF5255876C8001DD052 /* SwiftyJSON */; };
 		349D4DFB25587AB3001DD052 /* TouchBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D4DFA25587AB3001DD052 /* TouchBarComponent.swift */; };
+		34A485A3255C960500761A2B /* NSColor+webhex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A485A2255C960500761A2B /* NSColor+webhex.swift */; };
 		34B8E8CA255752A000F0AD2A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E8C9255752A000F0AD2A /* main.swift */; };
 		34B8E8D2255752C700F0AD2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E8D1255752C700F0AD2A /* AppDelegate.swift */; };
 		34B8E8DD2557534600F0AD2A /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B8E8DC2557534600F0AD2A /* DFRFoundation.framework */; };
@@ -36,6 +37,7 @@
 		349D4DE325585ADD001DD052 /* TouchBarHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarHandler.swift; sourceTree = "<group>"; };
 		349D4DF12558744A001DD052 /* MessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHandler.swift; sourceTree = "<group>"; };
 		349D4DFA25587AB3001DD052 /* TouchBarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarComponent.swift; sourceTree = "<group>"; };
+		34A485A2255C960500761A2B /* NSColor+webhex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+webhex.swift"; sourceTree = "<group>"; };
 		34B8E8C6255752A000F0AD2A /* touchbar-browser-helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "touchbar-browser-helper"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34B8E8C9255752A000F0AD2A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		34B8E8D1255752C700F0AD2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +67,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		34A485A1255C95ED00761A2B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				34A485A2255C960500761A2B /* NSColor+webhex.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		34B8E8BD255752A000F0AD2A = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +95,7 @@
 		34B8E8C8255752A000F0AD2A /* touchbar-browser-helper */ = {
 			isa = PBXGroup;
 			children = (
+				34A485A1255C95ED00761A2B /* Utils */,
 				349D4DF925587AA1001DD052 /* Models */,
 				34B8E8D4255752FF00F0AD2A /* TouchBar */,
 				34B8E8C9255752A000F0AD2A /* main.swift */,
@@ -183,6 +194,7 @@
 				349D4DF22558744A001DD052 /* MessageHandler.swift in Sources */,
 				349D4DE02558591F001DD052 /* BrowserCommunication.swift in Sources */,
 				349D4DFB25587AB3001DD052 /* TouchBarComponent.swift in Sources */,
+				34A485A3255C960500761A2B /* NSColor+webhex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

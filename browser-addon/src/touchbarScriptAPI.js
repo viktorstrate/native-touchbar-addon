@@ -6,25 +6,33 @@ browser.userScripts.onBeforeScript.addListener(script => {
   script.defineGlobals({
     touchbar: script.export({
       changeLayout: layout => {
-        const filteredLayout = layout.map(x => ({
-          type: x.type,
-          name: x.name,
-          label: x.label,
-        }))
-
         const changeLayoutMessage = {
           type: 'change_layout',
-          layout: filteredLayout,
+          layout,
         }
 
         browser.runtime.sendMessage({
-          message: {
-            type: 'send_native_message',
-            nativeMessage: changeLayoutMessage,
-          },
+          type: 'send_native_message',
+          nativeMessage: changeLayoutMessage,
         })
       },
-      addEventListener: browser.runtime.onMessage.addListener,
+      updateItem: (name, values) => {
+        const updateItemMessage = {
+          type: 'update_item',
+          name,
+          values,
+        }
+
+        browser.runtime.sendMessage({
+          type: 'send_native_message',
+          nativeMessage: updateItemMessage,
+        })
+      },
+      addEventListener: listener => {
+        browser.runtime.onMessage.addListener(message => {
+          listener(script.export(message))
+        })
+      },
     }),
   })
 

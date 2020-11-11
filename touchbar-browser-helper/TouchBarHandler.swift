@@ -47,10 +47,7 @@ class TouchBarHandler: NSObject, NSTouchBarDelegate {
   }
   
   func updateTouchbarStrip() {
-    
-//    strip.defaultItemIdentifiers = [.touchbarBrowserClose]
-    touchbarStrip.defaultItemIdentifiers = []
-    touchbarStrip.defaultItemIdentifiers.append(contentsOf: layoutComponents.map({ $0.identifier }))
+    touchbarStrip.defaultItemIdentifiers = layoutComponents.map({ $0.identifier })
   }
   
   lazy var globalTouchBarItem: NSCustomTouchBarItem = {
@@ -93,6 +90,7 @@ class TouchBarHandler: NSObject, NSTouchBarDelegate {
   }
   
   func removeGlobalTouchBarItem() {
+    self.touchbarStripVisible = false
     NSTouchBarItem.removeSystemTrayItem(self.globalTouchBarItem)
   }
 }

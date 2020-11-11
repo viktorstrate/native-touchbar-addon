@@ -1,0 +1,151 @@
+// ==TouchbarPacket==
+// @name YouTube
+// @match https://www.youtube.com/*
+// ==/TouchbarPacket==
+
+/* global touchbar:readonly */
+
+console.log('USER SCRIPT EXECUTING on', window.location.href)
+
+if (window.location.pathname === '/watch') {
+  // Video page
+  setupVideoPage()
+} else {
+  // Home page
+  setupGeneralNavigation()
+}
+
+function setupGeneralNavigation() {
+  const ACTION_HOME = 'navigate-home'
+  const ACTION_TRENDING = 'navigate-trending'
+  const ACTION_SUBSCRIPTIONS = 'navigate-subscriptions'
+
+  touchbar.changeLayout([
+    {
+      type: 'button',
+      name: ACTION_HOME,
+      label: 'Home',
+    },
+    {
+      type: 'button',
+      name: ACTION_TRENDING,
+      label: 'Trending',
+    },
+    {
+      type: 'button',
+      name: ACTION_SUBSCRIPTIONS,
+      label: 'Subscriptions',
+    },
+  ])
+
+  touchbar.addEventListener(message => {
+    if (message.type == 'action') {
+      switch (message.name) {
+        case ACTION_HOME:
+          location.href = '/'
+          break
+        case ACTION_TRENDING:
+          location.href = '/feed/trending'
+          break
+        case ACTION_SUBSCRIPTIONS:
+          location.href = '/feed/subscriptions'
+          break
+      }
+    }
+  })
+}
+
+function formatTimestamp(time) {
+  let minutes = Math.floor(time / 60)
+  let seconds = Math.floor(time - 60 * minutes)
+
+  if (seconds < 10) seconds = '0' + seconds
+
+  return `${minutes}:${seconds}`
+}
+
+function setupVideoPage() {
+  const PLAYBACK_SLIDER = 'playback-slider'
+  const MEDIA_PLAYPAUSE_BUTTON = 'media-playpause'
+  const ICON_PLAY = 'NSTouchBarPlayTemplate'
+  const ICON_PAUSE = 'NSTouchBarPauseTemplate'
+
+  const video = document.querySelector('video.video-stream')
+
+  const updateLayout = () => {
+    let playPauseButton
+    if (video.paused) {
+      playPauseButton = {
+        type: 'button',
+        name: MEDIA_PLAYPAUSE_BUTTON,
+        icon: ICON_PLAY,
+      }
+    } else {
+      playPauseButton = {
+        type: 'button',
+        name: MEDIA_PLAYPAUSE_BUTTON,
+        icon: ICON_PAUSE,
+      }
+    }
+
+    const playbackSlider = {
+      type: 'slider',
+      name: PLAYBACK_SLIDER,
+      label: formatTimestamp(video.currentTime),
+      value: video.currentTime / video.duration,
+      color: '#ff0000',
+    }
+
+    console.log(playbackSlider)
+
+    touchbar.changeLayout([playPauseButton, playbackSlider])
+  }
+
+  updateLayout()
+
+  let updateInterval = null
+
+  video.addEventListener('play', () => {
+    touchbar.updateItem(MEDIA_PLAYPAUSE_BUTTON, {
+      icon: ICON_PAUSE,
+    })
+
+    updateInterval = setInterval(() => {
+      touchbar.updateItem(PLAYBACK_SLIDER, {
+        value: video.currentTime / video.duration,
+        label: formatTimestamp(video.currentTime),
+      })
+    }, 500)
+  })
+  video.addEventListener('pause', () => {
+    touchbar.updateItem(MEDIA_PLAYPAUSE_BUTTON, {
+      icon: ICON_PLAY,
+    })
+
+    clearInterval(updateInterval)
+  })
+
+  touchbar.addEventListener(message => {
+    if (message.type == 'action' && message.target == 'button') {
+      switch (message.name) {
+        case MEDIA_PLAYPAUSE_BUTTON:
+          if (video.paused) {
+            video.play()
+          } else {
+            video.pause()
+          }
+          break
+      }
+    }
+
+    if (message.type == 'action' && message.target == 'slider') {
+      if (message.name == PLAYBACK_SLIDER) {
+        console.log('new slider position', message.value)
+
+        const newTime = video.duration * message.value
+        video.currentTime = newTime
+        updateLayout()
+      }
+    }
+  })
+}

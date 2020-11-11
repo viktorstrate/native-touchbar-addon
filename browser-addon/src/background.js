@@ -1,6 +1,10 @@
+import { loadTouchbarPackets } from './touchbarPackets'
+
 const nativePort = browser.runtime.connectNative('touchbar_browser_helper')
 
 console.log('background start')
+
+loadTouchbarPackets()
 
 let tabTouchbarLayouts = {}
 let activeTouchbarTab = null
@@ -14,7 +18,7 @@ nativePort.onDisconnect.addListener(p => {
   }
 })
 
-browser.runtime.onMessage.addListener(({ message }, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('runtime message', sender, sendResponse)
 
   if (message.type == 'send_native_message') {
@@ -34,48 +38,9 @@ nativePort.onMessage.addListener(response => {
 
   if (activeTouchbarTab) {
     console.log('sending message to tab', activeTouchbarTab)
-    browser.tabs.sendMessage(activeTouchbarTab, {
-      type: 'action',
-      name: response.name,
-    })
+    browser.tabs.sendMessage(activeTouchbarTab, response)
   }
 })
-;(async function () {
-  console.log('async userscript')
-
-  const youtubePacketCode = `(async function () {
-    console.log("USER SCRIPT EXECUTING on", window.location.href);
-
-    touchbar.changeLayout([
-      {
-        type: 'button',
-        name: 'browser-button',
-        label: window.location.host,
-        action: () => ('hello')
-      }
-    ])
-
-    touchbar.addEventListener(message => {
-      console.log('received client event', message)
-      document.body.innerHTML = \`<h1>This page has been eaten</h1>\`
-    })
-
-  })();`
-
-  console.log('youtube code', youtubePacketCode)
-
-  const result = await browser.userScripts.register({
-    matches: ['<all_urls>'],
-    js: [
-      {
-        code: youtubePacketCode,
-      },
-    ],
-    scriptMetadata: {},
-  })
-
-  console.log('script registered', result)
-})()
 
 // Tab management
 browser.tabs.onRemoved.addListener(({ tabId }) => {
@@ -95,6 +60,10 @@ browser.tabs.onActivated.addListener(({ tabId }) => {
       layout: tabTouchbarLayouts[tabId],
     })
   } else {
+    console.log('close touchbar')
     activeTouchbarTab = null
+    nativePort.postMessage({
+      type: 'dismiss_touchbar',
+    })
   }
 })
