@@ -49,15 +49,30 @@ function setupGeneralNavigation() {
 
   onEventFunction = message => {
     if (message.type == 'action') {
+      const menuItems = document.querySelectorAll(
+        '#items > ytd-guide-entry-renderer'
+      )
       switch (message.name) {
         case ACTION_HOME:
-          location.href = '/'
+          if (menuItems) {
+            menuItems[0].click()
+          } else {
+            location.href = '/'
+          }
           break
         case ACTION_TRENDING:
-          location.href = '/feed/trending'
+          if (menuItems) {
+            menuItems[1].click()
+          } else {
+            location.href = '/feed/trending'
+          }
           break
         case ACTION_SUBSCRIPTIONS:
-          location.href = '/feed/subscriptions'
+          if (menuItems) {
+            menuItems[2].click()
+          } else {
+            location.href = '/feed/subscriptions'
+          }
           break
       }
     }
@@ -122,6 +137,14 @@ function setupVideoPage() {
   let updateInterval = null
 
   video.addEventListener('play', () => {
+    onPlayEvent()
+  })
+
+  if (!video.paused) {
+    onPlayEvent()
+  }
+
+  function onPlayEvent() {
     touchbar.updateItem(MEDIA_PLAYPAUSE_BUTTON, {
       icon: ICON_PAUSE,
     })
@@ -132,7 +155,7 @@ function setupVideoPage() {
         label: formatTimestamp(video.currentTime),
       })
     }, 500)
-  })
+  }
 
   video.addEventListener('pause', () => {
     touchbar.updateItem(MEDIA_PLAYPAUSE_BUTTON, {

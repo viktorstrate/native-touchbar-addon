@@ -18,18 +18,35 @@ nativePort.onDisconnect.addListener(p => {
   }
 })
 
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('runtime message', sender, sendResponse)
-
+browser.runtime.onMessage.addListener((message, sender) => {
   if (message.type == 'send_native_message') {
-    console.log('sending native message', message.nativeMessage)
-
     if (message.nativeMessage.type == 'change_layout') {
       tabTouchbarLayouts[sender.tab.id] = message.nativeMessage.layout
       activeTouchbarTab = sender.tab.id
     }
 
-    nativePort.postMessage(message.nativeMessage)
+    if (message.nativeMessage.type == 'update_item') {
+      console.log('update item save state')
+      const itemIndex = tabTouchbarLayouts[sender.tab.id].findIndex(
+        x => x.name == message.nativeMessage.name
+      )
+
+      Object.assign(
+        tabTouchbarLayouts[sender.tab.id][itemIndex],
+        message.nativeMessage.values
+      )
+    }
+
+    // Only update touchbar if tab is active
+    browser.tabs
+      .query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT })
+      .then(tabs => browser.tabs.get(tabs[0].id))
+      .then(activeTab => {
+        if (activeTab.id === sender.tab.id) {
+          console.log('sending native message', message.nativeMessage)
+          nativePort.postMessage(message.nativeMessage)
+        }
+      })
   }
 })
 
