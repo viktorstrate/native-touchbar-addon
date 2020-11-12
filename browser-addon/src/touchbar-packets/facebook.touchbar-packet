@@ -1,0 +1,45 @@
+// ==TouchbarPacket==
+// @name YouTube
+// @match https://www.facebook.com/*
+// @match https://facebook.com/*
+// ==/TouchbarPacket==
+
+/* global touchbar:readonly */
+
+const ACTION_HOME = 'navigate-home'
+const ACTION_EVENTS = 'navigate-events'
+const ACTION_GROUPS = 'navigate-groups'
+
+touchbar.changeLayout([
+  {
+    type: 'button',
+    name: ACTION_HOME,
+    label: 'Home',
+  },
+  {
+    type: 'button',
+    name: ACTION_EVENTS,
+    label: 'Events',
+  },
+  {
+    type: 'button',
+    name: ACTION_GROUPS,
+    label: 'Groups',
+  },
+])
+
+touchbar.addEventListener(message => {
+  if (message.type == 'action') {
+    switch (message.name) {
+      case ACTION_HOME:
+        location.href = '/'
+        break
+      case ACTION_EVENTS:
+        location.href = '/events'
+        break
+      case ACTION_GROUPS:
+        location.href = '/groups/feed'
+        break
+    }
+  }
+})

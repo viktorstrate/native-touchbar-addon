@@ -28,6 +28,7 @@ const touchbarPackets = [
   require('./touchbar-packets/youtube.touchbar-packet'),
   require('./touchbar-packets/github.touchbar-packet'),
   require('./touchbar-packets/google.touchbar-packet'),
+  require('./touchbar-packets/facebook.touchbar-packet'),
 ]
 
 export const loadTouchbarPackets = async function () {
