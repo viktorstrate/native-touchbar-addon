@@ -6,7 +6,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "parcel src/background.js src/popup.html src/touchbarScriptAPI.js"
+    "start": "parcel src/background.js src/popup.html src/touchbarScriptAPI.js",
+    "launch": "web-ext run -s ./dist",
+    "build": "rm -rf dist/ && parcel build src/background.js src/popup.html src/touchbarScriptAPI.js && web-ext build -s ./dist"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -17,7 +19,8 @@
     "parcel-plugin-static-files-copy": "^2.5.0",
     "parcel-plugin-text": "^0.9.7",
     "prettier": "^2.1.2",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "web-ext": "^5.3.0"
   },
   "dependencies": {
     "parcel-bundler": "^1.12.4",
@@ -63,7 +66,7 @@
     "arrowParens": "avoid"
   },
   "parcel-plugin-text": {
-    "extensions":[
+    "extensions": [
       "txt",
       "touchbar-packet"
     ]
