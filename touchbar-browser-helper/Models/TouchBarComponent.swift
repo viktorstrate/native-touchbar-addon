@@ -55,6 +55,7 @@ class TouchBarComponent {
       sliderItem.label = label
       
       let slider = NSSlider()
+      slider.isContinuous = false
       
       slider.doubleValue = value
       slider.trackFillColor = color
@@ -82,17 +83,7 @@ class TouchBarComponent {
   }
   
   @objc func sliderAction(_ sender: NSSlider) {
-    
-    guard let event = NSApplication.shared.currentEvent else {
-      return
-    }
-    
-    
-    
-    if event.subtype == .windowExposed {
-      return
-    }
-    
+
     browserCommunication.sendMessage(message: JSON([
       "type": "action",
       "target": "slider",

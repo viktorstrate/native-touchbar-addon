@@ -5,14 +5,23 @@
 
 /* global touchbar:readonly */
 
-console.log('USER SCRIPT EXECUTING on', window.location.href)
+console.log('TOUCHBAR SCRIPT EXECUTING on', window.location.href)
 
-if (window.location.pathname === '/watch') {
-  // Video page
-  setupVideoPage()
-} else {
-  // Home page
-  setupGeneralNavigation()
+let onEventFunction = null
+touchbar.addEventListener(message => {
+  if (onEventFunction) onEventFunction(message)
+})
+
+configureTouchbar()
+function configureTouchbar() {
+  console.log('Configuring touchbar')
+  if (window.location.pathname === '/watch') {
+    // Video page
+    setupVideoPage()
+  } else {
+    // Home page
+    setupGeneralNavigation()
+  }
 }
 
 function setupGeneralNavigation() {
@@ -38,7 +47,7 @@ function setupGeneralNavigation() {
     },
   ])
 
-  touchbar.addEventListener(message => {
+  onEventFunction = message => {
     if (message.type == 'action') {
       switch (message.name) {
         case ACTION_HOME:
@@ -52,7 +61,7 @@ function setupGeneralNavigation() {
           break
       }
     }
-  })
+  }
 }
 
 function formatTimestamp(time) {
@@ -65,12 +74,19 @@ function formatTimestamp(time) {
 }
 
 function setupVideoPage() {
+  console.log('configuring touchbar for video page')
+
   const PLAYBACK_SLIDER = 'playback-slider'
   const MEDIA_PLAYPAUSE_BUTTON = 'media-playpause'
   const ICON_PLAY = 'NSTouchBarPlayTemplate'
   const ICON_PAUSE = 'NSTouchBarPauseTemplate'
 
   const video = document.querySelector('video.video-stream')
+  if (!video) {
+    console.log('video page not loaded yet, waiting...')
+    setTimeout(setupVideoPage, 1000)
+    return
+  }
 
   const updateLayout = () => {
     let playPauseButton
@@ -117,6 +133,7 @@ function setupVideoPage() {
       })
     }, 500)
   })
+
   video.addEventListener('pause', () => {
     touchbar.updateItem(MEDIA_PLAYPAUSE_BUTTON, {
       icon: ICON_PLAY,
@@ -125,7 +142,7 @@ function setupVideoPage() {
     clearInterval(updateInterval)
   })
 
-  touchbar.addEventListener(message => {
+  onEventFunction = message => {
     if (message.type == 'action' && message.target == 'button') {
       switch (message.name) {
         case MEDIA_PLAYPAUSE_BUTTON:
@@ -147,5 +164,23 @@ function setupVideoPage() {
         updateLayout()
       }
     }
+  }
+}
+
+hookPageChanges()
+function hookPageChanges() {
+  let oldHref = location.href
+
+  const observer = new MutationObserver(() => {
+    if (oldHref != document.location.href) {
+      oldHref = document.location.href
+      console.log('page changed')
+      configureTouchbar()
+    }
+  })
+
+  observer.observe(document.querySelector('body'), {
+    childList: true,
+    subtree: true,
   })
 }

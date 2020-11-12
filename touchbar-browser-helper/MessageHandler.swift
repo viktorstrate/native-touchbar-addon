@@ -95,9 +95,7 @@ class MessageHandler: BrowserCommunicationDelegate {
       
       DispatchQueue.main.async {
         if let newValue = message["values"]["value"].double {
-          if (slider.slider as? CustomSlider)?.tracking == false {
-            slider.doubleValue = newValue
-          }
+          slider.doubleValue = newValue
         }
         
         if let newLabel = message["values"]["label"].string {

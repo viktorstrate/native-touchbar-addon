@@ -24,7 +24,11 @@ export function parseTouchbarPacket(packet) {
   }
 }
 
-const touchbarPackets = [require('./touchbar-packets/youtube.touchbar-packet')]
+const touchbarPackets = [
+  require('./touchbar-packets/youtube.touchbar-packet'),
+  require('./touchbar-packets/github.touchbar-packet'),
+  require('./touchbar-packets/google.touchbar-packet'),
+]
 
 export const loadTouchbarPackets = async function () {
   const packetRegisterPromises = touchbarPackets

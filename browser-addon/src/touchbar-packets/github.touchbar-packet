@@ -1,0 +1,139 @@
+// ==TouchbarPacket==
+// @name YouTube
+// @match https://github.com/*
+// ==/TouchbarPacket==
+
+/* global touchbar:readonly */
+
+const githubPaths = [
+  '/pulls',
+  '/issues',
+  '/marketplace',
+  '/explore',
+  '/topics',
+  '/trending',
+  '/collections',
+  '/events',
+  '/sponsors',
+]
+
+console.log('LOADING GITHUB SCRIPT')
+
+console.log(
+  'PATHNAME',
+  location.pathname,
+  location.pathname == '/',
+  githubPaths.find(x => location.pathname.startsWith(x))
+)
+
+if (
+  location.pathname == '/' ||
+  githubPaths.find(x => location.pathname.startsWith(x))
+) {
+  loadGeneral()
+} else {
+  loadRepo()
+}
+
+function loadGeneral() {
+  console.log('not repo')
+
+  const ACTION_HOME = 'navigate-home'
+  const ACTION_PULL_REQUESTS = 'navigate-pull-requests'
+  const ACTION_ISSUES = 'navigate-issues'
+  const ACTION_MARKETPLACE = 'navigate-marketplace'
+  const ACTION_EXPLORE = 'navigate-explore'
+
+  touchbar.changeLayout([
+    {
+      type: 'button',
+      name: ACTION_HOME,
+      label: 'Home',
+    },
+    {
+      type: 'button',
+      name: ACTION_PULL_REQUESTS,
+      label: 'Pull requests',
+    },
+    {
+      type: 'button',
+      name: ACTION_ISSUES,
+      label: 'Issues',
+    },
+    {
+      type: 'button',
+      name: ACTION_MARKETPLACE,
+      label: 'Marketplace',
+    },
+    {
+      type: 'button',
+      name: ACTION_EXPLORE,
+      label: 'Explore',
+    },
+  ])
+
+  touchbar.addEventListener(message => {
+    if (message.type == 'action') {
+      switch (message.name) {
+        case ACTION_HOME:
+          location.href = '/'
+          break
+        case ACTION_PULL_REQUESTS:
+          location.href = '/pulls'
+          break
+        case ACTION_ISSUES:
+          location.href = '/issues'
+          break
+        case ACTION_MARKETPLACE:
+          location.href = '/marketplace'
+          break
+        case ACTION_EXPLORE:
+          location.href = '/explore'
+          break
+      }
+    }
+  })
+}
+
+function loadRepo() {
+  // Repository
+  console.log('repo here')
+
+  const repoMenu = document.querySelector(
+    'main nav[aria-label="Repository"] ul'
+  )
+
+  console.log('REPO MENU', repoMenu)
+
+  const menuItemElements = repoMenu.querySelectorAll('li')
+
+  console.log(menuItemElements)
+
+  const menuItems = [...menuItemElements].map(elm => ({
+    link: elm.querySelector('a').href,
+    label: elm.querySelector('span').textContent,
+  }))
+
+  console.log(menuItems)
+
+  const layout = menuItems.map(item => ({
+    type: 'button',
+    name: `navigate-repo-${item.label}`,
+    label: item.label,
+  }))
+
+  console.log(menuItems, layout)
+
+  touchbar.changeLayout(layout)
+
+  touchbar.addEventListener(message => {
+    if (message.type == 'action') {
+      const item = menuItems.find(
+        x => message.name == `navigate-repo-${x.label}`
+      )
+      if (item) {
+        location.href = item.link
+      }
+    }
+  })
+}

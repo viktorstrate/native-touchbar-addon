@@ -67,3 +67,29 @@ browser.tabs.onActivated.addListener(({ tabId }) => {
     })
   }
 })
+
+// Reset touchbar if domain changes
+browser.tabs.onUpdated.addListener(async (tabId, changes, tab) => {
+  if (changes.url) {
+    console.log('getting old url')
+    const oldUrl = await browser.sessions.getTabValue(tabId, 'configured_url')
+
+    console.log('got old url', oldUrl)
+
+    if (oldUrl) {
+      const oldHost = new URL(oldUrl).host
+      const newHost = new URL(changes.url).host
+
+      console.log('url changed', oldUrl, tab.url)
+
+      if (oldHost != newHost) {
+        console.log('url host changed')
+        nativePort.postMessage({
+          type: 'dismiss_touchbar',
+        })
+      }
+    }
+
+    browser.sessions.setTabValue(tabId, 'configured_url', changes.url)
+  }
+})
