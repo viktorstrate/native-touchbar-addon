@@ -2,7 +2,7 @@
 
   "name": "Touchbar",
   "manifest_version": 2,
-  "version": "1.0",
+  "version": "0.1.0",
 
   "description": "Native macOS touchbar controls",
   "icons": {
@@ -32,9 +32,10 @@
   },
 
   "permissions": [
-    "<all_urls>",
-    "storage",
+    "https://*/*",
+    "http://*/*",
     "nativeMessaging",
+    "storage",
     "tabs",
     "sessions"
   ]
