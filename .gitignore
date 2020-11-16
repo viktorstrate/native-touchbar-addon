@@ -9,6 +9,7 @@ node_modules/
 *.log
 
 ## Build
+build/
 dist/
 .cache/
 web-ext-artifacts/

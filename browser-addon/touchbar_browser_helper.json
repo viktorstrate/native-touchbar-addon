@@ -1,0 +1,9 @@
+{
+  "name": "touchbar_browser_helper",
+  "description": "native touchbar integration helper",
+  "path": "/Users/YOUR_USERNAME/Library/Application Support/touchbar-browser-helper/touchbar-browser-helper",
+  "type": "stdio",
+  "allowed_extensions": [
+    "native_touchbar@viktorstrate.github.com"
+  ]
+}

@@ -15,4 +15,39 @@ These small scripts are called [touchbar packets](./browser-addon/src/touchbar-p
 The binary is a small CLI app written mostly in Swift, its purpose is to receive configurations for the touchbar from the browser extension, update the touchbar accordingly and send any user interaction events back to the browser.
 The binary uses a private system API to show the new touchbar on top of the original. Thanks to [Touch Bär](https://github.com/a2/touch-baer).
 
+## Installing
 
+### Build and install the binary
+
+Clone the repository, and navigate into it.
+
+```sh
+$ git clone https://github.com/viktorstrate/native-touchbar-addon
+$ cd native-touchbar-addon
+```
+
+Make sure you have the newest version of Xcode installed.
+Then run the following command to build and install the binary.
+
+Alternatively you can open the xcode project and click on `Product` -> `Build`
+
+```sh
+$ xcodebuild -scheme touchbar-browser-helper
+```
+
+This will build the binary and copy it to `~/Library/Application Support/touchbar-browser-helper/`
+
+### Configure the Native Messaging Host
+
+Next we need to tell Firefox where the binary is located.
+To do this, copy the [touchbar-browser-helper.json](./browser-addon/touchbar_browser_helper.json) file to `~/Library/Application Support/Mozilla/NativeMessagingHosts/`. Then change the path attribute in the json file to match the username of your account.
+
+You can do all this by run the following commands.
+
+```sh
+$ mkdir -p ~/Library/Application\ Support/Mozilla/NativeMessagingHosts/
+$ cp ./browser-addon/touchbar_browser_helper.json ~/Library/Application\ Support/Mozilla/NativeMessagingHosts/
+$ sed -i '' "s/YOUR_USERNAME/$USER/g" ~/Library/Application\ Support/Mozilla/NativeMessagingHosts/touchbar_browser_helper.json
+```
+
+### Install the browser extension
