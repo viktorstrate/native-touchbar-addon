@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "author": "viktorstrate <viktorstrate@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "private": false,
   "scripts": {
     "start": "parcel src/background.js src/popup.html src/touchbarScriptAPI.js",

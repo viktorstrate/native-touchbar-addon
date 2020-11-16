@@ -1,9 +1,10 @@
 {
 
-  "name": "Touchbar",
+  "name": "Native Touchbar",
   "manifest_version": 2,
   "version": "0.1.0",
 
+  "homepage_url": "https://github.com/viktorstrate/native-touchbar-addon",
   "description": "Native macOS touchbar controls",
   "icons": {
     "48": "icons/touchbar-icon.svg"
