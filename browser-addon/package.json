@@ -8,7 +8,8 @@
   "scripts": {
     "start": "parcel src/background.js src/popup.html src/touchbarScriptAPI.js",
     "launch": "web-ext run -s ./dist",
-    "build": "rm -rf dist/ && parcel build src/background.js src/popup.html src/touchbarScriptAPI.js && web-ext build -s ./dist"
+    "build": "rm -rf dist/ && parcel build src/background.js src/popup.html src/touchbarScriptAPI.js && web-ext build -s ./dist",
+    "lint": "rm -rf dist/ && parcel build src/background.js src/popup.html src/touchbarScriptAPI.js && web-ext lint -s ./dist"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
