@@ -6,7 +6,7 @@
 
   "description": "Native macOS touchbar controls",
   "icons": {
-    "48": "icons/message.svg"
+    "48": "icons/touchbar-icon.svg"
   },
 
   "browser_specific_settings": {
@@ -22,7 +22,7 @@
 
   "browser_action": {
     "browser_style": true,
-    "default_icon": "icons/message.svg",
+    "default_icon": "icons/touchbar-icon.svg",
     "default_title": "Touchbar",
     "default_popup": "popup.html"
   },
