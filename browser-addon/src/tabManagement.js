@@ -1,3 +1,7 @@
+/**
+ * Keeps the touch bar in sync with browser tabs
+ */
+
 let tabTouchbarLayouts = {}
 let activeTouchbarTab = null
 

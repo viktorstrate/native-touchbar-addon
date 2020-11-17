@@ -15,6 +15,15 @@ const GlobalStyles = createGlobalStyle`
   }
 `
 
+browser.runtime
+  .sendMessage({
+    scope: 'popup_message',
+    type: 'get_touchbar_packets',
+  })
+  .then(packets => {
+    console.log('popup touchbar packets', packets)
+  })
+
 const App = () => (
   <Router initialEntries={['/']}>
     <GlobalStyles />

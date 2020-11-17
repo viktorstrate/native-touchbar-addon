@@ -1,3 +1,7 @@
+/**
+ * Load native binary and communication to and from it
+ */
+
 import * as tabManagement from './tabManagement'
 
 export const loadNativePort = ({ nativePort }) => {
@@ -8,6 +12,8 @@ export const loadNativePort = ({ nativePort }) => {
   })
 
   browser.runtime.onMessage.addListener((message, sender) => {
+    if (message.scope != 'native_bridge') return
+
     if (message.type == 'send_native_message') {
       if (message.nativeMessage.type == 'change_layout') {
         tabManagement.setTabTouchbarLayout(
@@ -46,7 +52,10 @@ export const loadNativePort = ({ nativePort }) => {
 
     if (activeTouchbarTab) {
       console.log('sending message to tab', activeTouchbarTab)
-      browser.tabs.sendMessage(activeTouchbarTab, response)
+      browser.tabs.sendMessage(activeTouchbarTab, {
+        ...response,
+        scope: 'native_bridge_response',
+      })
     }
   })
 }

@@ -1,8 +1,8 @@
+/**
+ * API for touchbar packets
+ */
+
 browser.userScripts.onBeforeScript.addListener(script => {
-  // const scriptMetadata = script.metadata
-
-  console.log('script here', script)
-
   script.defineGlobals({
     touchbar: script.export({
       changeLayout: layout => {
@@ -12,6 +12,7 @@ browser.userScripts.onBeforeScript.addListener(script => {
         }
 
         browser.runtime.sendMessage({
+          scope: 'native_bridge',
           type: 'send_native_message',
           nativeMessage: changeLayoutMessage,
         })
@@ -24,12 +25,14 @@ browser.userScripts.onBeforeScript.addListener(script => {
         }
 
         browser.runtime.sendMessage({
+          scope: 'native_bridge',
           type: 'send_native_message',
           nativeMessage: updateItemMessage,
         })
       },
       addEventListener: listener => {
         browser.runtime.onMessage.addListener(message => {
+          if (message.scope != 'native_bridge_response') return
           listener(script.export(message))
         })
       },

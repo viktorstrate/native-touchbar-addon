@@ -1,3 +1,11 @@
+/**
+ * Configure and load touchbar packet scripts
+ */
+
+/**
+ * Parses the header of a touchbar packet
+ * @param {string} packet a raw touchbar-packet string
+ */
 export function parseTouchbarPacket(packet) {
   const [_, header, body] = packet.match(
     /^[\n\s]*\/\/\s+==TouchbarPacket==([^]+)==\/TouchbarPacket==\n([^]+)/
@@ -17,6 +25,8 @@ export function parseTouchbarPacket(packet) {
       }
       return result
     }, {})
+
+  headerFields.name = headerFields.name[0]
 
   return {
     headers: headerFields,
