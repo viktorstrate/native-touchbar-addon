@@ -24,29 +24,27 @@ export function parseTouchbarPacket(packet) {
   }
 }
 
-const touchbarPackets = [
+export const touchbarPackets = [
   require('./touchbar-packets/youtube.touchbar-packet'),
   require('./touchbar-packets/github.touchbar-packet'),
   require('./touchbar-packets/google.touchbar-packet'),
   require('./touchbar-packets/facebook.touchbar-packet'),
-]
+].map(parseTouchbarPacket)
 
 export const loadTouchbarPackets = async function () {
-  const packetRegisterPromises = touchbarPackets
-    .map(parseTouchbarPacket)
-    .map(packet => {
-      return browser.userScripts.register({
-        matches: packet.headers.match,
-        js: [
-          {
-            code: packet.script,
-          },
-        ],
-        scriptMetadata: {},
-      })
+  const packetRegisterPromises = touchbarPackets.map(packet => {
+    return browser.userScripts.register({
+      matches: packet.headers.match,
+      js: [
+        {
+          code: packet.script,
+        },
+      ],
+      scriptMetadata: {},
     })
+  })
 
-  const results = await Promise.all(packetRegisterPromises)
+  await Promise.all(packetRegisterPromises)
 
-  console.log('All scripts loaded')
+  console.log('All touchbar packets loaded')
 }
