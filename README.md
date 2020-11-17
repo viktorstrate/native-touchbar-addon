@@ -51,3 +51,8 @@ $ sed -i '' "s/YOUR_USERNAME/$USER/g" ~/Library/Application\ Support/Mozilla/Nat
 ```
 
 ### Install the browser extension
+
+Install the browser extension from 
+https://addons.mozilla.org/en-US/firefox/addon/native-touchbar/
+
+The extension will automatically start the helper program in the background.
