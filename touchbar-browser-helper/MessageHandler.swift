@@ -33,11 +33,17 @@ class MessageHandler: BrowserCommunicationDelegate {
     case "ping":
       handlePingRequest(browserCommunication: browserCommunication)
     case "change_layout":
-      handleChangeLayout(message, browserCommunication: browserCommunication)
+      DispatchQueue.main.async {
+        self.handleChangeLayout(message, browserCommunication: browserCommunication)
+      }
     case "update_item":
-      handleUpdateItem(message, browserCommunication: browserCommunication)
+      DispatchQueue.main.async {
+        self.handleUpdateItem(message, browserCommunication: browserCommunication)
+      }
     case "dismiss_touchbar":
-      handleDismissTouchbar()
+      DispatchQueue.main.async {
+        self.handleDismissTouchbar()
+      }
     default:
       let error = jsonError(type: messageType, reason: "Unknown message type")
       browserCommunication.sendMessage(message: error)
@@ -78,14 +84,12 @@ class MessageHandler: BrowserCommunicationDelegate {
         return
       }
       
-      DispatchQueue.main.async {
-        if let newLabel = message["values"]["label"].string {
-          button.title = newLabel
-        }
-        
-        if let newIcon = message["values"]["icon"].string {
-          button.image = NSImage(named: newIcon)
-        }
+      if let newLabel = message["values"]["label"].string {
+        button.title = newLabel
+      }
+      
+      if let newIcon = message["values"]["icon"].string {
+        button.image = NSImage(named: newIcon)
       }
       
     case .slider:
@@ -93,18 +97,16 @@ class MessageHandler: BrowserCommunicationDelegate {
         return
       }
       
-      DispatchQueue.main.async {
-        if let newValue = message["values"]["value"].double {
-          slider.doubleValue = newValue
-        }
-        
-        if let newLabel = message["values"]["label"].string {
-          slider.label = newLabel
-        }
-        
-        if let newColor = message["values"]["color"].string {
-          slider.slider.trackFillColor = NSColor.from(hex: newColor)
-        }
+      if let newValue = message["values"]["value"].double {
+        slider.doubleValue = newValue
+      }
+      
+      if let newLabel = message["values"]["label"].string {
+        slider.label = newLabel
+      }
+      
+      if let newColor = message["values"]["color"].string {
+        slider.slider.trackFillColor = NSColor.from(hex: newColor)
       }
       
     }
@@ -112,9 +114,7 @@ class MessageHandler: BrowserCommunicationDelegate {
   }
   
   func handleDismissTouchbar() {
-    DispatchQueue.main.async {
-      self.touchbarHandler.touchbarStripVisible = false
-    }
+    self.touchbarHandler.touchbarStripVisible = false
   }
   
   func generateComponent(componentJson: JSON, browserCommunication: BrowserCommunication) -> TouchBarComponent? {

@@ -18,10 +18,8 @@ class TouchBarHandler: NSObject, NSTouchBarDelegate {
   
   var layoutComponents: [TouchBarComponent] = [] {
     didSet {
-      DispatchQueue.main.async {
-        self.updateTouchbarStrip()
-        self.touchbarStripVisible = true
-      }
+      self.updateTouchbarStrip()
+      self.touchbarStripVisible = true
     }
   }
   
