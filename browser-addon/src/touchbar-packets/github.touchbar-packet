@@ -1,5 +1,5 @@
 // ==TouchbarPacket==
-// @name YouTube
+// @name GitHub
 // @match https://github.com/*
 // ==/TouchbarPacket==
 

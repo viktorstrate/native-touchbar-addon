@@ -11,11 +11,16 @@ const ItemWrapper = styled.div`
   }
 `
 
+const StyledLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+`
+
 const MenuItem = ({ label, navigateTo }) => {
   const item = <ItemWrapper>{label}</ItemWrapper>
 
   if (navigateTo) {
-    return <Link to={navigateTo}>{item}</Link>
+    return <StyledLink to={navigateTo}>{item}</StyledLink>
   }
 
   return item

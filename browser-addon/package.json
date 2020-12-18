@@ -48,7 +48,8 @@
     },
     "rules": {
       "react/prop-types": "off",
-      "no-unused-vars": "warn"
+      "no-unused-vars": "warn",
+      "no-extra-semi": "off"
     }
   },
   "babel": {

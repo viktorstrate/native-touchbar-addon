@@ -1,5 +1,5 @@
 // ==TouchbarPacket==
-// @name YouTube
+// @name Facebook
 // @match https://www.facebook.com/*
 // @match https://facebook.com/*
 // ==/TouchbarPacket==

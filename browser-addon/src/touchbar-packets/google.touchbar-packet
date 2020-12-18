@@ -1,5 +1,5 @@
 // ==TouchbarPacket==
-// @name YouTube
+// @name Google
 // @match https://www.google.com/?*
 // @match https://www.google.com/webhp?*
 // @match https://www.google.com/search?*
