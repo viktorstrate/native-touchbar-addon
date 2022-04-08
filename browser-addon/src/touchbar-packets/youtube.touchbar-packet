@@ -28,6 +28,7 @@ function setupGeneralNavigation() {
   const ACTION_HOME = 'navigate-home'
   const ACTION_TRENDING = 'navigate-trending'
   const ACTION_SUBSCRIPTIONS = 'navigate-subscriptions'
+  const ACTION_SHORTS = 'navigate-shorts'
 
   touchbar.changeLayout([
     {
@@ -39,6 +40,11 @@ function setupGeneralNavigation() {
       type: 'button',
       name: ACTION_TRENDING,
       label: 'Trending',
+    },
+    {
+      type: 'button',
+      name: ACTION_SHORTS,
+      label: 'Shorts',
     },
     {
       type: 'button',
@@ -67,9 +73,14 @@ function setupGeneralNavigation() {
             location.href = '/feed/trending'
           }
           break
-        case ACTION_SUBSCRIPTIONS:
+        case ACTION_SHORTS:
           if (menuItems) {
             menuItems[2].click()
+          }
+          break 
+        case ACTION_SUBSCRIPTIONS:
+          if (menuItems) {
+            menuItems[3].click()
           } else {
             location.href = '/feed/subscriptions'
           }
